@@ -1,4 +1,4 @@
-# place "sim86_shared_debug.dll" next to this file
+# place "sim86_shared_debug.dylib" next to this file
 
 import ctypes
 import pathlib
@@ -199,7 +199,7 @@ class _instruction_table(ctypes.Structure):
   def _convert(self):
     return InstructionTable([_make(self.encodings[i]) for i in range(self.encoding_count)], self.max_instruction_byte_count)
 
-dll = ctypes.CDLL(str(pathlib.Path(__file__).parent / "sim86_shared_debug.dll"))
+dll = ctypes.CDLL(str(pathlib.Path(__file__).parent / "sim86_shared_debug.dylib"))
 
 _get_version = dll.Sim86_GetVersion
 _get_version.argtypes = []

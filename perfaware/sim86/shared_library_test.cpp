@@ -12,7 +12,7 @@
 
 #include <stdio.h>
 
-#include "build/sim86_shared.h"
+#include "shared/sim86_shared.h"
 #pragma comment (lib, "sim86_shared.lib")
 
 unsigned char ExampleDisassembly[247] =

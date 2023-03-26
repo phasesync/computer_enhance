@@ -22,11 +22,14 @@
 #include "sim86_decode.h"
 #include "sim86_text.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
 #include "sim86_instruction.cpp"
 #include "sim86_instruction_table.cpp"
 #include "sim86_memory.cpp"
 #include "sim86_decode.cpp"
 #include "sim86_text.cpp"
+#pragma clang diagnostic pop
 
 extern "C" u32 Sim86_GetVersion(void)
 {
