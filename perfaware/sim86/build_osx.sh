@@ -29,6 +29,7 @@ if (-not (Get-Command $compiler)) {
     Exit 1
 }
 
+&$compiler -P -E ../sim86_lib.h | clang-format --style="Microsoft" | Out-File -FilePath "../shared/sim86_shared.h"
 &$compiler $std $lib @($warningFlags) -install_name ${libPrefix}sim86_shared_release$libExt -o ../shared/${libPrefix}sim86_shared_release${libExt} ../sim86_lib.cpp 
 &$compiler $std $lib @($warningFlags) @($debugFlags) -install_name ${libPrefix}sim86_shared_debug$libExt -o ../shared/${libPrefix}sim86_shared_debug${libExt} ../sim86_lib.cpp 
 otool -L ../shared/libsim86_shared_debug.dylib
