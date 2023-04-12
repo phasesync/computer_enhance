@@ -10,12 +10,22 @@
    
    ======================================================================== */
 
+#pragma once
+
 #include "sim86.h"
 #include "sim86_instruction.h"
 #include "sim86_instruction_table.h"
 
-extern "C" u32 Sim86_GetVersion(void);
-extern "C" void Sim86_Decode8086Instruction(u32 SourceSize, u8 *Source, instruction *Dest);
-extern "C" char const *Sim86_RegisterNameFromOperand(register_access *RegAccess);
-extern "C" char const *Sim86_MnemonicFromOperationType(operation_type Type);
-extern "C" void Sim86_Get8086InstructionTable(instruction_table *Dest);
+#if defined(__GNUC__)
+    #define SIM86_API
+#else
+    #define SIM86_API __declspec(dllimport)
+#endif
+
+extern "C" {
+    SIM86_API u32 Sim86_GetVersion(void);
+   	SIM86_API void Sim86_Decode8086Instruction(u32 SourceSize, u8 *Source, instruction *Dest);
+    SIM86_API char const *Sim86_RegisterNameFromOperand(register_access *RegAccess);
+    SIM86_API char const *Sim86_MnemonicFromOperationType(operation_type Type);
+    SIM86_API void Sim86_Get8086InstructionTable(instruction_table *Dest);
+}

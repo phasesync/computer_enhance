@@ -4,7 +4,7 @@ Set-StrictMode -Version Latest
 
 if (-not $IsMacOs)
 {
-  Write-Error "Not Linux";
+  Write-Error "Not MacOs";
   Exit 1;
 }
 

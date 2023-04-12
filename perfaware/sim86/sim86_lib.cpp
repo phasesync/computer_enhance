@@ -31,43 +31,51 @@
 #include "sim86_text.cpp"
 #pragma clang diagnostic pop
 
-extern "C" u32 Sim86_GetVersion(void)
-{
-    u32 Result = SIM86_VERSION;
-    return Result;
-}
+#if defined(__GNUC__)
+    #define SIM86_API __attribute__((visibility("default")))
+#else
+    #define SIM86_API __declspec(dllexport)
+#endif
 
-extern "C" void Sim86_Decode8086Instruction(u32 SourceSize, u8 *Source, instruction *Dest)
-{
-    instruction_table Table = Get8086InstructionTable();
-    
-    // NOTE(casey): The 8086 decoder requires the ability to read up to 15 bytes (the maximum
-    // allowable instruction size)
-    assert(Table.MaxInstructionByteCount == 15);
-    u8 GuardBuffer[16] = {};
-    if(SourceSize < Table.MaxInstructionByteCount)
+extern "C" {
+    SIM86_API u32 Sim86_GetVersion(void)
     {
-        memcpy(GuardBuffer, Source, SourceSize);
-        Source = GuardBuffer;
+        u32 Result = SIM86_VERSION;
+        return Result;
     }
     
-    segmented_access At = FixedMemoryPow2(4, Source);
-    *Dest = DecodeInstruction(Table, At);
-}
-
-extern "C" char const *Sim86_RegisterNameFromOperand(register_access *RegAccess)
-{
-    char const *Result = GetRegName(*RegAccess);
-    return Result;
-}
-
-extern "C" char const *Sim86_MnemonicFromOperationType(operation_type Type)
-{
-    char const *Result = GetMnemonic(Type);
-    return Result;
-}
-
-extern "C" void Sim86_Get8086InstructionTable(instruction_table *Dest)
-{
-    *Dest = Get8086InstructionTable();
+    SIM86_API void Sim86_Decode8086Instruction(u32 SourceSize, u8 *Source, instruction *Dest)
+    {
+        instruction_table Table = Get8086InstructionTable();
+        
+        // NOTE(casey): The 8086 decoder requires the ability to read up to 15 bytes (the maximum
+        // allowable instruction size)
+        assert(Table.MaxInstructionByteCount == 15);
+        u8 GuardBuffer[16] = {};
+        if(SourceSize < Table.MaxInstructionByteCount)
+        {
+            memcpy(GuardBuffer, Source, SourceSize);
+            Source = GuardBuffer;
+        }
+        
+        segmented_access At = FixedMemoryPow2(4, Source);
+        *Dest = DecodeInstruction(Table, At);
+    }
+    
+    SIM86_API char const *Sim86_RegisterNameFromOperand(register_access *RegAccess)
+    {
+        char const *Result = GetRegName(*RegAccess);
+        return Result;
+    }
+    
+    SIM86_API char const *Sim86_MnemonicFromOperationType(operation_type Type)
+    {
+        char const *Result = GetMnemonic(Type);
+        return Result;
+    }
+    
+    SIM86_API void Sim86_Get8086InstructionTable(instruction_table *Dest)
+    {
+        *Dest = Get8086InstructionTable();
+    }
 }

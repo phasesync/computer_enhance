@@ -14,13 +14,13 @@ public static partial class InstructionDecoder
     public static Instruction Decode8086Instruction(Span<byte> Source)
     {
         Instruction instruction;
-        Native.Sim86_Decode8086Instruction((uint)Source.Length, ref MemoryMarshal.AsRef<byte>(Source), out instruction);
+        Native.Sim86_Decode8086Instruction((uint)Source.Length, in MemoryMarshal.AsRef<byte>(Source), out instruction);
         return instruction;
     }
 
     public static string RegisterNameFromOperand(RegisterAccess RegAccess)
     {
-        return Marshal.PtrToStringAnsi(Native.Sim86_RegisterNameFromOperand(ref RegAccess))!;
+        return Marshal.PtrToStringAnsi(Native.Sim86_RegisterNameFromOperand(in RegAccess))!;
     }
 
     public static string MnemonicFromOperationType(OperationType Type)

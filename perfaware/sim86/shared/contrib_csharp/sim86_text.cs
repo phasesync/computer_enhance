@@ -53,13 +53,15 @@ static partial class InstructionWriter
         var flags = instruction.Flags;
         bool W = flags.HasFlag(InstructionFlag.Wide);
 
+	var operands = new InstructionOperand[] { instruction.Operand0, instruction.Operand1 };
+	
         if (flags.HasFlag(InstructionFlag.Lock))
         {
             if (instruction.Op == OperationType.xchg)
             {
-                var temp = instruction.Operands[0];
-                instruction.Operands[0] = instruction.Operands[1];
-                instruction.Operands[1] = temp;
+                var temp = operands[0];
+                operands[0] = operands[1];
+                operands[1] = temp;
             }
             dest.Write($"lock ");
         }
@@ -73,9 +75,9 @@ static partial class InstructionWriter
         dest.Write($"{InstructionDecoder.MnemonicFromOperationType(instruction.Op)}{mnemonicsuffix} ");
 
         var separator = "";
-        for (uint operandIndex = 0; operandIndex < instruction.Operands.Length; operandIndex++)
+        for (uint operandIndex = 0; operandIndex < operands.Length; operandIndex++)
         {
-            var operand = instruction.Operands[operandIndex];
+            var operand = operands[operandIndex];
             if (operand.Type == OperandType.None)
             {
                 continue;
@@ -89,7 +91,7 @@ static partial class InstructionWriter
                 case OperandType.None: { } break;
                 case OperandType.Register:
                     {
-                        var register = InstructionDecoder.RegisterNameFromOperand(instruction.Operands[operandIndex].Register);
+                        var register = InstructionDecoder.RegisterNameFromOperand(operands[operandIndex].Register);
                         dest.Write($"{register}");
                     }
                     break;
@@ -107,7 +109,7 @@ static partial class InstructionWriter
                         }
                         else
                         {
-                            if (instruction.Operands[0].Type != OperandType.Register)
+                            if (operands[0].Type != OperandType.Register)
                             {
                                 dest.Write(W ? "word " : "byte ");
                             }

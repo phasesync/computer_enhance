@@ -106,8 +106,9 @@ public struct Instruction
     public uint Size;
     public OperationType Op;
     public InstructionFlag Flags;
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-    public InstructionOperand[] Operands;
+    //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    public InstructionOperand Operand0;
+    public InstructionOperand Operand1;
     public uint SegmentOverride;
 };
 
