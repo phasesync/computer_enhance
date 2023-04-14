@@ -24,11 +24,10 @@
     <DefineConstants>Linux</DefineConstants>
   </PropertyGroup>
 
-  <!--
   <ItemGroup>
-    <None Update="sim86_shared_debug.dylib">
+    <None Update="libsim86_shared_debug.dylib">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  -->
+
 </Project>

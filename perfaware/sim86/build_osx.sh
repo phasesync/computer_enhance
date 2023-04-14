@@ -18,7 +18,6 @@ Set-Location $directoryName
 $compiler = "clang"
 $lib = "-dynamiclib"
 $libExt = ".dylib"
-$libExt = ".so"
 $libPrefix = "lib"
 $debugFlags = "-g", "-fno-inline", "-O0"
 $warningFlags = "-Wno-unused-function", "-Wall", "-Werror"
